@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — StoreDB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h1>
+  <p class="page-sub">Live summary of your store data</p>
+</div>
+
+<!-- KPI Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="kpi-value">{{ total_users }}</div>
+      <div class="kpi-label">Total Users</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="kpi-card kpi-green">
+      <div class="kpi-icon"><i class="bi bi-cart-fill"></i></div>
+      <div class="kpi-value">{{ total_orders }}</div>
+      <div class="kpi-label">Total Orders</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="kpi-card kpi-amber">
+      <div class="kpi-icon"><i class="bi bi-currency-dollar"></i></div>
+      <div class="kpi-value">${{ "%.2f"|format(total_revenue) }}</div>
+      <div class="kpi-label">Total Revenue</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="kpi-card kpi-purple">
+      <div class="kpi-icon"><i class="bi bi-box-seam-fill"></i></div>
+      <div class="kpi-value">{{ total_products }}</div>
+      <div class="kpi-label">Products</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <!-- Order Status Breakdown -->
+  <div class="col-lg-4">
+    <div class="dash-card">
+      <h2 class="dash-card-title"><i class="bi bi-pie-chart-fill me-2"></i>Order Status</h2>
+      <div class="status-list">
+        {% set status_colors = {'pending':'amber','shipped':'blue','delivered':'green','cancelled':'red'} %}
+        {% for status, cnt in status_counts %}
+        <div class="status-row">
+          <span class="status-badge status-{{ status }}">{{ status|title }}</span>
+          <span class="status-count">{{ cnt }}</span>
+        </div>
+        {% else %}
+        <p class="text-muted small">No orders yet.</p>
+        {% endfor %}
+      </div>
+      <div class="kpi-sub mt-3">Avg payment: <strong>${{ "%.2f"|format(avg_payment) }}</strong></div>
+    </div>
+  </div>
+
+  <!-- Top Users -->
+  <div class="col-lg-4">
+    <div class="dash-card">
+      <h2 class="dash-card-title"><i class="bi bi-trophy-fill me-2"></i>Top Users</h2>
+      {% for name, cnt in top_users %}
+      <div class="top-user-row">
+        <div class="top-user-rank">{{ loop.index }}</div>
+        <div class="top-user-name">{{ name }}</div>
+        <div class="top-user-badge">{{ cnt }} orders</div>
+      </div>
+      {% else %}
+      <p class="text-muted small">No data yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="col-lg-4">
+    <div class="dash-card">
+      <h2 class="dash-card-title"><i class="bi bi-clock-history me-2"></i>Recent Orders</h2>
+      {% for order in recent_orders %}
+      <div class="recent-order-row">
+        <div>
+          <span class="mono">#{{ order.order_id }}</span>
+          <span class="text-muted small ms-2">{{ order.user.name }}</span>
+        </div>
+        <span class="status-badge status-{{ order.status }}">{{ order.status }}</span>
+      </div>
+      {% else %}
+      <p class="text-muted small">No orders yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-3">
+  <div class="col-12">
+    <div class="dash-card">
+      <h2 class="dash-card-title"><i class="bi bi-lightning-fill me-2"></i>Quick Actions</h2>
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <a href="{{ url_for('add_user') }}"    class="btn btn-action"><i class="bi bi-person-plus-fill me-1"></i>Add User</a>
+        <a href="{{ url_for('add_product') }}" class="btn btn-action"><i class="bi bi-plus-square-fill me-1"></i>Add Product</a>
+        <a href="{{ url_for('add_order') }}"   class="btn btn-action btn-action-primary"><i class="bi bi-cart-plus-fill me-1"></i>Place Order</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

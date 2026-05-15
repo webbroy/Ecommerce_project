@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Edit Order #{{ order.order_id }} — StoreDB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <a href="{{ url_for('orders') }}" class="btn btn-back mb-2"><i class="bi bi-arrow-left me-1"></i>Back</a>
+  <h1 class="page-title"><i class="bi bi-pencil-fill me-2"></i>Edit Order <span class="mono">#{{ order.order_id }}</span></h1>
+</div>
+
+<div class="form-card">
+  <div class="mb-3">
+    <p class="text-muted">Customer: <strong>{{ order.user.name }}</strong> &mdash; Date: {{ order.order_date }}</p>
+  </div>
+  <form method="POST">
+    <div class="mb-4">
+      <label class="form-label">Order Status</label>
+      <select name="status" class="form-select custom-input">
+        {% for s in ['pending','shipped','delivered','cancelled'] %}
+        <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s|title }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-action btn-action-primary">
+      <i class="bi bi-check-lg me-1"></i>Save Changes
+    </button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Users — StoreDB{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+  <div>
+    <h1 class="page-title"><i class="bi bi-people-fill me-2"></i>Users</h1>
+    <p class="page-sub">{{ users|length }} registered user{{ 's' if users|length != 1 }}</p>
+  </div>
+  <a href="{{ url_for('add_user') }}" class="btn btn-action btn-action-primary">
+    <i class="bi bi-person-plus-fill me-1"></i>Add User
+  </a>
+</div>
+
+<div class="data-card">
+  <div class="table-responsive">
+    <table class="table data-table">
+      <thead>
+        <tr>
+          <th>#ID</th><th>Name</th><th>Email</th><th>Tier</th>
+          <th>Orders</th><th>Joined</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td><span class="mono">#{{ u.user_id }}</span></td>
+          <td><strong>{{ u.name }}</strong></td>
+          <td class="text-muted">{{ u.email }}</td>
+          <td><span class="tier-badge tier-{{ u.tier }}">{{ u.tier|title }}</span></td>
+          <td>{{ u.orders|length }}</td>
+          <td class="text-muted small">{{ u.created_at }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{{ url_for('edit_user', uid=u.user_id) }}" class="btn btn-sm btn-edit">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+              <form method="POST" action="{{ url_for('delete_user', uid=u.user_id) }}"
+                    onsubmit="return confirm('Delete user {{ u.name }}?');">
+                <button class="btn btn-sm btn-del" type="submit"><i class="bi bi-trash-fill"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">No users found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
