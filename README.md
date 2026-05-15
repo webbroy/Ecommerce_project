@@ -1,4 +1,4 @@
-# StoreDB — CS665 Project 3
+# StoreDB — CS665 Project 
 
 A full-stack inventory & order management system built with Python (Flask), SQLAlchemy, and SQLite, featuring a dark-themed Bootstrap 5 UI.
 
@@ -27,7 +27,7 @@ It demonstrates multi-table CRUD, relationship management (One-to-Many), atomic 
 ### 1. Clone the repository
 ```bash
 git clone <your-repo-url>
-cd cs665_project3
+cd Ecommerce_project
 ```
 
 ### 2. Create and activate a virtual environment
@@ -95,7 +95,7 @@ Then open **http://127.0.0.1:5000** in your browser.
 ## Project Structure
 
 ```
-cs665_project3/
+Ecommerce_project/
 ├── app.py                  # Flask app, models, routes
 ├── requirements.txt
 ├── schema.sql              # Raw SQL schema (3NF)
