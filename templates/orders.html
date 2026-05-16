@@ -25,7 +25,7 @@
         {% for o in orders %}
         <tr>
           <td><span class="mono">#{{ o.order_id }}</span></td>
-          <td><strong>{{ o.user.name }}</strong></td>
+          <td><strong>{{ o.user_name }}</strong></td>
           <td class="text-muted small">{{ o.order_date }}</td>
           <td><span class="status-badge status-{{ o.status }}">{{ o.status|title }}</span></td>
           <td>
